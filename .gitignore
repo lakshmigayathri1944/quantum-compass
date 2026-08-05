@@ -1,35 +1,9 @@
-# Python
+node_modules/
+dist/
 __pycache__/
-*.py[cod]
-*.pyo
-
-# Virtual environments
+*.pyc
+.env
 .venv/
 venv/
-env/
-
-# Database
-*.db
-*.sqlite
-*.sqlite3
-
-# Environment variables
-.env
-.env.*
-
-# VS Code
 .vscode/
-
-# Node
-node_modules/
-
-# React/Vite
-dist/
-build/
-
-# Logs
-*.log
-
-# OS
-.DS_Store
-Thumbs.db
+backend/*.db
