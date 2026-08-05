@@ -2,42 +2,26 @@
 
 ### AI-Powered Quantum Computing Learning Platform
 
-Quantum Compass is an AI-powered educational platform designed to help students learn **Quantum Computing** through personalized learning roadmaps, practical quantum projects, progress tracking, analytics, and AI-powered mentorship.
+Quantum Compass is an AI-powered educational platform designed to help learners build practical skills in **quantum computing** through personalized learning roadmaps, skill analysis, project recommendations, progress tracking, analytics, and an AI-powered mentor.
 
 ---
 
-## 🚀 Project Overview
+## 🎯 Problem Statement
 
-Learning quantum computing can be challenging for beginners because the required mathematics, programming concepts, quantum concepts, algorithms, and practical experience are spread across different resources.
+Learning quantum computing can be difficult for beginners because the required mathematics, programming, quantum concepts, algorithms, and practical projects are often spread across different resources.
 
-**Quantum Compass** brings these learning components together into one platform.
+**Quantum Compass brings these learning components together into one structured learning environment.**
 
-The system provides:
+The platform is designed to help learners:
 
-* 🎯 Personalized learning roadmaps
-* 📚 Quantum computing courses and concepts
-* 🛠️ Practical quantum projects
-* 📊 Learning progress tracking
-* 📈 Analytics dashboard
-* 🧠 Skill-level analysis
-* 🤖 AI Quantum Mentor
-* 🎯 Project recommendations
-* 🏆 Portfolio-oriented project learning
-
----
-
-## 💡 Problem Statement
-
-Students interested in quantum computing often face several challenges:
-
-* Lack of a structured learning roadmap
-* Difficulty understanding quantum concepts
-* Limited hands-on practice
-* Difficulty choosing suitable projects
-* No centralized progress tracking
-* Limited career guidance
-
-Quantum Compass addresses these challenges through a personalized learning environment.
+* Understand their current skill level
+* Follow a structured learning roadmap
+* Learn quantum computing concepts progressively
+* Practice through hands-on projects
+* Track learning progress
+* Analyze skills
+* Receive project recommendations
+* Interact with an AI-powered mentor
 
 ---
 
@@ -45,160 +29,122 @@ Quantum Compass addresses these challenges through a personalized learning envir
 
 ### 🎯 Personalized Learning Roadmap
 
-The platform analyzes a learner's current skills and generates a structured learning path covering:
+Quantum Compass provides a structured learning path covering areas such as:
 
-* Python
+* Python Programming
 * Linear Algebra
-* Quantum Fundamentals
+* Quantum Computing Fundamentals
 * Qubits
 * Quantum Gates
 * Qiskit
 * Quantum Algorithms
 * Quantum Optimization
-* Quantum Projects
+* Quantum Machine Learning
+* Practical Quantum Projects
 
-### 📊 Dashboard
+### 📊 Learning Dashboard
 
-The dashboard provides an overview of:
+The dashboard provides learners with an overview of:
 
-* Current skill level
-* Learning progress
+* Current learning level
+* Overall progress
 * Completed skills
-* Next recommended skill
+* Recommended next skills
 * Learning roadmap
 * Career goal
 
 ### 📈 Analytics
 
-Learners can monitor:
+The analytics section helps learners monitor:
 
-* Overall progress
+* Overall learning progress
 * Completed skills
 * Total skills
-* Learning level
+* Current learning level
 * Project completion
+
+### 🧠 Skill Analysis
+
+The platform analyzes learner information and provides skill-level insights to help identify suitable learning areas and next steps.
+
+### 🎯 Project Recommendations
+
+Quantum Compass recommends practical projects based on the learner's level and learning progress.
 
 ### 🛠️ Quantum Project Lab
 
-The platform provides practical projects across beginner, intermediate, and advanced levels.
+The project system is designed around progressive hands-on learning.
 
-#### Project 01 — Quantum Random Number Generator
+| Project                             | Level        | Main Concepts                                           |
+| ----------------------------------- | ------------ | ------------------------------------------------------- |
+| Quantum Random Number Generator     | Beginner     | Qubits, Superposition, Measurement, Qiskit              |
+| Quantum Teleportation               | Intermediate | Entanglement, CNOT, Hadamard Gates                      |
+| Grover Search Algorithm             | Advanced     | Oracle, Amplitude Amplification, Quantum Search         |
+| QAOA Optimization                   | Advanced     | QAOA, Parameterized Circuits, Optimization              |
+| Quantum Machine Learning Classifier | Advanced     | Feature Encoding, Variational Circuits, Hybrid Learning |
+| Quantum Compass Capstone            | Advanced     | Quantum Education, AI Guidance, Projects, Analytics     |
 
-Concepts:
+### 🤖 AI Quantum Mentor
 
-* Qubits
-* Superposition
-* Measurement
-* Qiskit
-
-#### Project 02 — Quantum Teleportation
-
-Concepts:
-
-* Qubits
-* Entanglement
-* CNOT
-* Hadamard gates
-* Quantum communication
-
-#### Project 03 — Grover Search Algorithm
-
-Concepts:
-
-* Grover's algorithm
-* Oracle
-* Amplitude amplification
-* Quantum search
-
-#### Project 04 — QAOA Optimization
-
-Concepts:
-
-* QAOA
-* Optimization
-* Parameterized quantum circuits
-* Combinatorial optimization
-
-#### Project 05 — Quantum Machine Learning Classifier
-
-Concepts:
-
-* Quantum machine learning
-* Feature encoding
-* Variational circuits
-* Hybrid quantum-classical learning
-
-#### Project 06 — Quantum Compass Capstone
-
-A complete quantum learning application combining:
-
-* AI guidance
-* Quantum education
-* Progress tracking
-* Practical projects
-* Flask backend
-* React frontend
-
-### 🤖 Quantum AI Mentor
-
-The AI Mentor provides guidance related to:
+The AI Mentor provides learning guidance around:
 
 * Quantum computing
 * Qiskit
 * Quantum algorithms
-* Projects
+* Quantum projects
 * Learning paths
-* Career development
+* Career-oriented guidance
 
 ---
 
-## 🏆 Project Completion
+## 📸 Screenshots
 
-The Quantum Project Lab contains:
+### Dashboard
 
-**6 / 6 projects completed**
+![Quantum Compass Dashboard](screenshots/dashboard.png)
 
-**100% completion**
+### Analytics
 
-| Project                             | Level        | Status      |
-| ----------------------------------- | ------------ | ----------- |
-| Quantum Random Number Generator     | Beginner     | ✅ Completed |
-| Quantum Teleportation               | Intermediate | ✅ Completed |
-| Grover Search Algorithm             | Advanced     | ✅ Completed |
-| QAOA Optimization Project           | Advanced     | ✅ Completed |
-| Quantum Machine Learning Classifier | Advanced     | ✅ Completed |
-| Quantum Compass Capstone            | Advanced     | ✅ Completed |
+![Quantum Compass Analytics](screenshots/analytics.png)
+
+### Projects
+
+![Quantum Compass Projects](screenshots/projects.png)
+
+### AI Mentor
+
+![Quantum Compass AI Mentor](screenshots/ai-mentor.png)
 
 ---
 
 ## 🏗️ System Architecture
 
 ```text
-                    ┌──────────────────────┐
-                    │      React UI        │
-                    │      Frontend        │
-                    └──────────┬───────────┘
-                               │
-                               │ REST API
-                               ▼
-                    ┌──────────────────────┐
-                    │     Flask Backend    │
-                    │        API Layer     │
-                    └──────────┬───────────┘
-                               │
-              ┌────────────────┼────────────────┐
-              │                │                │
-              ▼                ▼                ▼
-       ┌────────────┐   ┌──────────────┐  ┌──────────────┐
-       │ SQLite DB  │   │ ML / Skill   │  │ Project      │
-       │            │   │ Analysis     │  │ Recommender  │
-       └────────────┘   └──────────────┘  └──────────────┘
-                               │
-                               ▼
-                    ┌──────────────────────┐
-                    │ Quantum Learning     │
-                    │ & Project System     │
-                    └──────────────────────┘
+                    ┌─────────────────────────┐
+                    │     React Frontend      │
+                    │       Vite + JS         │
+                    └────────────┬────────────┘
+                                 │
+                                 │ REST API
+                                 ▼
+                    ┌─────────────────────────┐
+                    │     Flask Backend       │
+                    │       API Layer         │
+                    └────────────┬────────────┘
+                                 │
+              ┌──────────────────┼──────────────────┐
+              │                  │                  │
+              ▼                  ▼                  ▼
+      ┌──────────────┐   ┌──────────────┐   ┌────────────────┐
+      │ SQLite DB    │   │ Skill / ML   │   │ Project        │
+      │              │   │ Analysis     │   │ Recommendation │
+      └──────────────┘   └──────────────┘   └────────────────┘
+              │                  │                  │
+              └──────────────────┼──────────────────┘
+                                 ▼
+                    ┌─────────────────────────┐
+                    │ Quantum Learning System │
+                    └─────────────────────────┘
 ```
 
 ---
@@ -222,27 +168,29 @@ The Quantum Project Lab contains:
 
 * SQLite
 
-### Quantum Computing
+### Data & Intelligence
 
-* Qiskit
+* Python-based skill analysis
+* Progress tracking
+* Personalized roadmap logic
+* Project recommendation system
+* Learner data stored in CSV datasets
+
+### Quantum Computing Concepts
+
 * Qubits
 * Superposition
+* Measurement
 * Entanglement
 * Quantum Gates
 * Grover's Algorithm
 * QAOA
 * Quantum Machine Learning
-
-### AI / Recommendation
-
-* Skill analysis
-* Personalized roadmap generation
-* Project recommendation
-* AI mentorship
+* Qiskit
 
 ---
 
-## 📂 Project Structure
+## 📁 Project Structure
 
 ```text
 quantum-compass/
@@ -265,56 +213,77 @@ quantum-compass/
 │   └── test_ml.py
 │
 ├── frontend/
-│   ├── src/
 │   ├── public/
+│   ├── src/
+│   │   ├── Analytics.jsx
+│   │   ├── App.jsx
+│   │   ├── Chat.jsx
+│   │   ├── ChatBot.jsx
+│   │   ├── Courses.jsx
+│   │   ├── Login.jsx
+│   │   ├── Projects.jsx
+│   │   ├── ProjectWorkspace.jsx
+│   │   ├── SkillAnalyzer.jsx
+│   │   └── ...
 │   ├── package.json
-│   ├── package-lock.json
-│   └── vite.config.js
+│   └── package-lock.json
+│
+├── screenshots/
+│   ├── ai-mentor.png
+│   ├── analytics.png
+│   ├── dashboard.png
+│   └── projects.png
 │
 ├── .gitignore
 └── README.md
 ```
 
+> The local SQLite database and development-only files are excluded from version control through `.gitignore`.
+
 ---
 
-## ⚙️ Installation
+## ⚙️ Installation & Setup
 
-### 1. Clone the repository
+### 1. Clone the Repository
 
 ```bash
 git clone https://github.com/lakshmigayathri1944/quantum-compass.git
 cd quantum-compass
 ```
 
-### 2. Backend setup
+### 2. Set Up the Backend
 
-```bash
+Open a terminal:
+
+```powershell
 cd backend
 py -m pip install -r requirements.txt
 py app.py
 ```
 
-The backend runs at:
+The Flask backend should run at:
 
 ```text
 http://127.0.0.1:5000
 ```
 
-### 3. Frontend setup
+### 3. Set Up the Frontend
 
-Open another terminal:
+Open a **second terminal**:
 
-```bash
+```powershell
 cd frontend
 npm install
 npm run dev
 ```
 
-Open the local URL displayed by Vite.
+Open the local URL displayed by Vite in your browser.
 
 ---
 
 ## 🔌 Backend API
+
+The backend exposes API endpoints for authentication, dashboards, analytics, progress, projects, recommendations, skill analysis, and the AI mentor.
 
 | Endpoint                                    | Method | Purpose                  |
 | ------------------------------------------- | ------ | ------------------------ |
@@ -327,20 +296,20 @@ Open the local URL displayed by Vite.
 | `/projects/<user_id>/<project_id>/start`    | POST   | Start a project          |
 | `/projects/<user_id>/<project_id>/complete` | POST   | Complete a project       |
 | `/skill-analysis/<user_id>`                 | GET    | Skill analysis           |
-| `/chat`                                     | POST   | AI Mentor                |
+| `/chat`                                     | POST   | AI Mentor interaction    |
 | `/health`                                   | GET    | Backend health check     |
 
 ---
 
 ## 🧪 Backend Health Check
 
-The backend provides:
+The backend provides a health-check endpoint:
 
 ```text
 GET /health
 ```
 
-Example response:
+Example:
 
 ```json
 {
@@ -352,9 +321,9 @@ Example response:
 
 ---
 
-## 🎓 Learning Journey
+## 🧭 Learning Journey
 
-Quantum Compass follows a progressive learning path:
+Quantum Compass follows a progressive learning model:
 
 ```text
 Python
@@ -378,30 +347,47 @@ Quantum Machine Learning
 Practical Quantum Projects
 ```
 
+This progression helps learners move from fundamental concepts toward practical quantum computing applications.
+
+---
+
+## 🧪 Testing
+
+Backend testing files are included in the project:
+
+```text
+backend/test_api.py
+backend/test_ml.py
+```
+
+These can be used to validate API functionality and model-related functionality during development.
+
 ---
 
 ## 🔮 Future Improvements
 
-Planned improvements include:
+Potential future enhancements include:
 
-* Real quantum hardware integration
+* Integration with real quantum hardware
 * IBM Quantum backend integration
-* Advanced AI tutoring
-* Automated coding evaluation
-* More quantum algorithms
 * Interactive quantum circuit visualization
+* More advanced AI tutoring
+* Automated coding/project evaluation
+* Additional quantum algorithms
 * Student leaderboards
-* Certification system
+* Certification and achievement system
 * Cloud deployment
 * Advanced career recommendations
 
 ---
 
-## 🎯 Project Goals
+## 🎯 Project Vision
 
 Quantum Compass aims to make quantum computing education:
 
 **Accessible → Structured → Practical → Personalized → Career-oriented**
+
+The long-term goal is to provide learners with a single platform where they can **learn concepts, analyze their skills, practice projects, track progress, and receive guidance** throughout their quantum computing journey.
 
 ---
 
@@ -415,16 +401,20 @@ Computer Science Engineering
 
 ## 📌 Project Status
 
-🚀 **Capstone Completed**
+**Quantum Compass — Capstone Project**
 
-⚛️ **6/6 Quantum Projects Completed**
-
-💯 **100% Project Completion**
-
-🔧 **Actively improving and expanding**
+* React + Vite frontend
+* Flask backend
+* SQLite database
+* Skill analysis
+* Progress tracking
+* Project recommendation
+* AI Mentor
+* Analytics dashboard
+* Practical quantum project learning
 
 ---
 
-## ⭐ Support
+## 📄 License
 
-If you find this project useful, consider giving the repository a ⭐ on GitHub.
+This project is currently intended as an educational and portfolio project.
