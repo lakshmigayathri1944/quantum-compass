@@ -5,7 +5,7 @@ from datetime import datetime
 import os
 
 # ============================================================
-# OPTIONAL EXISTING MODULES
+# OPTIONAL MODULES
 # ============================================================
 
 try:
@@ -20,11 +20,6 @@ try:
     from progress_model import get_progress
 except Exception:
     get_progress = None
-
-try:
-    from model import analyze_skill
-except Exception:
-    analyze_skill = None
 
 try:
     from project_recommender import recommend_projects
@@ -43,7 +38,7 @@ DATABASE = os.path.abspath(DATABASE)
 
 
 # ============================================================
-# DATABASE HELPERS
+# DATABASE
 # ============================================================
 
 def get_db():
@@ -56,10 +51,7 @@ def initialize_database():
 
     conn = get_db()
 
-    # --------------------------------------------------------
     # USERS
-    # --------------------------------------------------------
-
     conn.execute("""
         CREATE TABLE IF NOT EXISTS users (
             id INTEGER PRIMARY KEY AUTOINCREMENT,
@@ -70,10 +62,7 @@ def initialize_database():
         )
     """)
 
-    # --------------------------------------------------------
     # STUDENTS
-    # --------------------------------------------------------
-
     conn.execute("""
         CREATE TABLE IF NOT EXISTS students (
             id INTEGER PRIMARY KEY AUTOINCREMENT,
@@ -84,25 +73,20 @@ def initialize_database():
         )
     """)
 
-    # --------------------------------------------------------
-    # PROGRESS
-    # --------------------------------------------------------
-
+    # IMPORTANT:
+    # This schema matches your EXISTING database.
     conn.execute("""
         CREATE TABLE IF NOT EXISTS progress (
             id INTEGER PRIMARY KEY AUTOINCREMENT,
             user_id INTEGER NOT NULL,
-            skill TEXT NOT NULL,
+            skill_name TEXT,
             status TEXT NOT NULL DEFAULT 'Completed',
-            completed_date TEXT,
-            score INTEGER
+            completion_date TEXT,
+            skill TEXT
         )
     """)
 
-    # --------------------------------------------------------
     # PROJECT PROGRESS
-    # --------------------------------------------------------
-
     conn.execute("""
         CREATE TABLE IF NOT EXISTS project_progress (
             id INTEGER PRIMARY KEY AUTOINCREMENT,
@@ -126,7 +110,7 @@ initialize_database()
 
 
 # ============================================================
-# COURSE ROADMAP
+# SKILLS
 # ============================================================
 
 SKILLS = [
@@ -143,10 +127,11 @@ SKILLS = [
 
 
 # ============================================================
-# REAL PROJECT LAB
+# PROJECTS
 # ============================================================
 
 PROJECTS = [
+
     {
         "id": 1,
         "title": "Quantum Random Number Generator",
@@ -164,6 +149,7 @@ PROJECTS = [
             "Qiskit"
         ]
     },
+
     {
         "id": 2,
         "title": "Quantum Teleportation",
@@ -182,6 +168,7 @@ PROJECTS = [
             "Hadamard"
         ]
     },
+
     {
         "id": 3,
         "title": "Grover Search Algorithm",
@@ -200,6 +187,7 @@ PROJECTS = [
             "Qiskit"
         ]
     },
+
     {
         "id": 4,
         "title": "QAOA Optimization Project",
@@ -218,6 +206,7 @@ PROJECTS = [
             "Qiskit"
         ]
     },
+
     {
         "id": 5,
         "title": "Quantum Machine Learning Classifier",
@@ -235,6 +224,7 @@ PROJECTS = [
             "Python"
         ]
     },
+
     {
         "id": 6,
         "title": "Quantum Compass Capstone",
@@ -267,7 +257,7 @@ def health():
 
     try:
         conn = get_db()
-        conn.execute("SELECT 1").fetchone()
+        conn.execute("SELECT 1")
         conn.close()
     except Exception:
         database_status = "Disconnected"
@@ -313,11 +303,6 @@ def login():
             "message": "Invalid email or password."
         }), 401
 
-    # --------------------------------------------------------
-    # Existing database may contain passwords.
-    # Compare directly for current local project.
-    # --------------------------------------------------------
-
     stored_password = user["password"]
 
     if stored_password is not None:
@@ -337,6 +322,47 @@ def login():
 
 
 # ============================================================
+# HELPER - GET COMPLETED SKILLS
+# ============================================================
+
+def get_completed_skills(user_id):
+
+    conn = get_db()
+
+    rows = conn.execute("""
+        SELECT
+            COALESCE(
+                NULLIF(TRIM(skill_name), ''),
+                NULLIF(TRIM(skill), '')
+            ) AS skill,
+            status
+        FROM progress
+        WHERE user_id = ?
+    """, (user_id,)).fetchall()
+
+    conn.close()
+
+    completed = []
+
+    for row in rows:
+
+        skill = row["skill"]
+        status = row["status"]
+
+        if (
+            skill
+            and status
+            and str(status).strip().lower() == "completed"
+        ):
+            skill = str(skill).strip()
+
+            if skill not in completed:
+                completed.append(skill)
+
+    return completed
+
+
+# ============================================================
 # DASHBOARD
 # ============================================================
 
@@ -351,32 +377,18 @@ def dashboard(user_id):
         WHERE id = ?
     """, (user_id,)).fetchone()
 
-    if not user:
-        conn.close()
+    conn.close()
 
+    if not user:
         return jsonify({
             "status": "error",
             "message": "User not found."
         }), 404
 
-    rows = conn.execute("""
-        SELECT skill, status
-        FROM progress
-        WHERE user_id = ?
-        AND status = 'Completed'
-    """, (user_id,)).fetchall()
-
-    conn.close()
-
-    completed_skills = [
-        row["skill"]
-        for row in rows
-    ]
-
+    completed_skills = get_completed_skills(user_id)
     completed_set = set(completed_skills)
 
     completed_count = len(completed_set)
-
     total_skills = len(SKILLS)
 
     progress_value = round(
@@ -391,7 +403,6 @@ def dashboard(user_id):
         level = "Beginner"
 
     learning_path = []
-
     next_found = False
 
     for skill in SKILLS:
@@ -421,11 +432,8 @@ def dashboard(user_id):
 
     return jsonify({
         "status": "success",
-
         "user": user["name"] or "Gayathri",
-
         "role": user["goal"] or "Quantum Learner",
-
         "completed_skills": completed_skills,
 
         "analytics": {
@@ -436,6 +444,55 @@ def dashboard(user_id):
         },
 
         "learning_path": learning_path
+    })
+
+
+# ============================================================
+# SKILLS ENDPOINT
+# FIXES: GET /skills/1
+# ============================================================
+
+@app.route("/skills/<int:user_id>", methods=["GET"])
+def get_skills(user_id):
+
+    completed = set(get_completed_skills(user_id))
+
+    result = []
+
+    next_found = False
+
+    for index, skill in enumerate(SKILLS, start=1):
+
+        if skill in completed:
+            status = "Completed"
+
+        elif not next_found:
+            status = "Next Skill"
+            next_found = True
+
+        else:
+            status = "Pending"
+
+        result.append({
+            "id": index,
+            "skill": skill,
+            "status": status
+        })
+
+    completed_count = len(completed)
+    total = len(SKILLS)
+
+    progress_value = round(
+        (completed_count / total) * 100
+    ) if total else 0
+
+    return jsonify({
+        "status": "success",
+        "user_id": user_id,
+        "skills": result,
+        "completed": completed_count,
+        "total": total,
+        "progress": f"{progress_value}%"
     })
 
 
@@ -460,17 +517,23 @@ def complete_skill():
     if skill not in SKILLS:
         return jsonify({
             "status": "error",
-            "message": "Unknown skill."
+            "message": "Unknown skill.",
+            "available_skills": SKILLS
         }), 400
 
     conn = get_db()
 
+    # Existing record can be stored in either skill_name or skill.
     existing = conn.execute("""
         SELECT id
         FROM progress
         WHERE user_id = ?
-        AND skill = ?
-    """, (user_id, skill)).fetchone()
+        AND (
+            skill_name = ?
+            OR skill = ?
+        )
+        LIMIT 1
+    """, (user_id, skill, skill)).fetchone()
 
     today = datetime.now().strftime("%Y-%m-%d")
 
@@ -478,25 +541,42 @@ def complete_skill():
 
         conn.execute("""
             UPDATE progress
-            SET status = 'Completed',
-                completed_date = ?
+            SET
+                skill_name = ?,
+                skill = NULL,
+                status = 'Completed',
+                completion_date = ?
             WHERE id = ?
-        """, (today, existing["id"]))
+        """, (
+            skill,
+            today,
+            existing["id"]
+        ))
 
     else:
 
         conn.execute("""
             INSERT INTO progress
-            (user_id, skill, status, completed_date)
+            (
+                user_id,
+                skill_name,
+                status,
+                completion_date
+            )
             VALUES (?, ?, 'Completed', ?)
-        """, (user_id, skill, today))
+        """, (
+            user_id,
+            skill,
+            today
+        ))
 
     conn.commit()
     conn.close()
 
     return jsonify({
         "status": "success",
-        "message": f"{skill} completed successfully."
+        "message": f"{skill} completed successfully.",
+        "skill": skill
     })
 
 
@@ -539,13 +619,11 @@ def get_projects(user_id):
         saved = progress_map.get(project["id"])
 
         if saved:
-
             item["status"] = saved["status"]
             item["started_at"] = saved["started_at"]
             item["completed_at"] = saved["completed_at"]
 
         else:
-
             item["status"] = "Available"
             item["started_at"] = None
             item["completed_at"] = None
@@ -553,8 +631,7 @@ def get_projects(user_id):
         result.append(item)
 
     completed_count = sum(
-        1
-        for project in result
+        1 for project in result
         if project["status"] == "Completed"
     )
 
@@ -585,15 +662,13 @@ def start_project(user_id, project_id):
 
     project = next(
         (
-            project
-            for project in PROJECTS
-            if project["id"] == project_id
+            p for p in PROJECTS
+            if p["id"] == project_id
         ),
         None
     )
 
     if project is None:
-
         return jsonify({
             "status": "error",
             "message": "Project not found."
@@ -618,9 +693,7 @@ def start_project(user_id, project_id):
             "project_status": existing["status"]
         })
 
-    now = datetime.now().strftime(
-        "%Y-%m-%d %H:%M:%S"
-    )
+    now = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
 
     conn.execute("""
         INSERT INTO project_progress
@@ -659,15 +732,13 @@ def complete_project(user_id, project_id):
 
     project = next(
         (
-            project
-            for project in PROJECTS
-            if project["id"] == project_id
+            p for p in PROJECTS
+            if p["id"] == project_id
         ),
         None
     )
 
     if project is None:
-
         return jsonify({
             "status": "error",
             "message": "Project not found."
@@ -676,21 +747,20 @@ def complete_project(user_id, project_id):
     conn = get_db()
 
     existing = conn.execute("""
-        SELECT id
+        SELECT id, started_at
         FROM project_progress
         WHERE user_id = ?
         AND project_id = ?
     """, (user_id, project_id)).fetchone()
 
-    now = datetime.now().strftime(
-        "%Y-%m-%d %H:%M:%S"
-    )
+    now = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
 
     if existing:
 
         conn.execute("""
             UPDATE project_progress
-            SET status = 'Completed',
+            SET
+                status = 'Completed',
                 completed_at = ?
             WHERE user_id = ?
             AND project_id = ?
@@ -734,7 +804,7 @@ def complete_project(user_id, project_id):
 
     progress_value = round(
         (completed_count / total) * 100
-    )
+    ) if total else 0
 
     return jsonify({
         "status": "success",
@@ -755,14 +825,11 @@ def complete_project(user_id, project_id):
 @app.route("/analytics/<int:user_id>", methods=["GET"])
 def analytics(user_id):
 
-    conn = get_db()
+    completed_skills = len(
+        set(get_completed_skills(user_id))
+    )
 
-    completed_skills = conn.execute("""
-        SELECT COUNT(DISTINCT skill)
-        FROM progress
-        WHERE user_id = ?
-        AND status = 'Completed'
-    """, (user_id,)).fetchone()[0]
+    conn = get_db()
 
     completed_projects = conn.execute("""
         SELECT COUNT(*)
@@ -799,28 +866,41 @@ def analytics(user_id):
 
 
 # ============================================================
-# RECOMMEND
+# RECOMMENDATIONS
+# IMPORTANT: Uses PROJECTS list, NOT a nonexistent DB table.
 # ============================================================
 
 @app.route("/recommend/<int:user_id>", methods=["GET"])
 def recommend(user_id):
 
+    conn = get_db()
+
+    rows = conn.execute("""
+        SELECT project_id
+        FROM project_progress
+        WHERE user_id = ?
+        AND LOWER(status) = 'completed'
+    """, (user_id,)).fetchall()
+
+    conn.close()
+
+    completed_ids = {
+        int(row["project_id"])
+        for row in rows
+    }
+
+    recommendations = [
+        dict(project)
+        for project in PROJECTS
+        if project["id"] not in completed_ids
+    ]
+
     return jsonify({
         "status": "success",
-        "recommendations": [
-            {
-                "title": "Quantum Random Number Generator",
-                "level": "Beginner"
-            },
-            {
-                "title": "Quantum Teleportation",
-                "level": "Intermediate"
-            },
-            {
-                "title": "Grover Search Algorithm",
-                "level": "Advanced"
-            }
-        ]
+        "recommendations": recommendations,
+        "completed_projects": len(completed_ids),
+        "available_projects": len(PROJECTS),
+        "recommended_projects": len(recommendations)
     })
 
 
@@ -831,32 +911,21 @@ def recommend(user_id):
 @app.route("/skill-analysis/<int:user_id>", methods=["GET"])
 def skill_analysis(user_id):
 
-    conn = get_db()
+    completed = get_completed_skills(user_id)
 
-    rows = conn.execute("""
-        SELECT skill, status
-        FROM progress
-        WHERE user_id = ?
-    """, (user_id,)).fetchall()
+    count = len(completed)
 
-    conn.close()
-
-    completed = [
-        row["skill"]
-        for row in rows
-        if row["status"] == "Completed"
-    ]
+    if count >= 9:
+        level = "Advanced"
+    elif count >= 5:
+        level = "Intermediate"
+    else:
+        level = "Beginner"
 
     return jsonify({
         "status": "success",
         "user_id": user_id,
-        "level": (
-            "Advanced"
-            if len(completed) >= 9
-            else "Intermediate"
-            if len(completed) >= 5
-            else "Beginner"
-        ),
+        "level": level,
         "completed_skills": completed,
         "total_skills": len(SKILLS)
     })
@@ -876,7 +945,6 @@ def chat():
     ).strip()
 
     if not message:
-
         return jsonify({
             "status": "error",
             "message": "Please enter a message."
@@ -889,32 +957,29 @@ def chat():
         reply = (
             "QAOA is the Quantum Approximate Optimization "
             "Algorithm. It uses parameterized quantum "
-            "circuits to find approximate solutions to "
-            "optimization problems."
+            "circuits to solve optimization problems."
         )
 
     elif "grover" in lower:
 
         reply = (
-            "Grover's algorithm provides a quantum "
-            "search method with approximately quadratic "
-            "speedup for unstructured search."
+            "Grover's algorithm provides approximately "
+            "quadratic speedup for unstructured search."
         )
 
     elif "qiskit" in lower:
 
         reply = (
             "Qiskit is an open-source framework for "
-            "building, running and studying quantum "
-            "circuits and algorithms."
+            "building and studying quantum circuits."
         )
 
     elif "qubit" in lower:
 
         reply = (
             "A qubit is the basic unit of quantum "
-            "information. Unlike a classical bit, it "
-            "can exist in a superposition of |0> and |1>."
+            "information. It can exist in a superposition "
+            "of |0> and |1>."
         )
 
     else:
@@ -933,7 +998,7 @@ def chat():
 
 
 # ============================================================
-# ERROR HANDLER
+# 404
 # ============================================================
 
 @app.errorhandler(404)
@@ -945,6 +1010,10 @@ def not_found(error):
     }), 404
 
 
+# ============================================================
+# 500
+# ============================================================
+
 @app.errorhandler(500)
 def internal_error(error):
 
@@ -955,7 +1024,7 @@ def internal_error(error):
 
 
 # ============================================================
-# START SERVER
+# START
 # ============================================================
 
 if __name__ == "__main__":
@@ -964,17 +1033,18 @@ if __name__ == "__main__":
     print("=" * 60)
     print("🚀 QUANTUM COMPASS AI BACKEND")
     print("=" * 60)
+    print("💚 Health    : GET  /health")
     print("🔐 Login     : POST /login")
     print("📊 Dashboard : GET  /dashboard/<user_id>")
-    print("📈 Analytics : GET  /analytics/<user_id>")
+    print("🎓 Skills    : GET  /skills/<user_id>")
     print("✅ Progress  : POST /progress")
+    print("📈 Analytics : GET  /analytics/<user_id>")
     print("🎯 Recommend : GET  /recommend/<user_id>")
     print("🛠️ Projects  : GET  /projects/<user_id>")
     print("▶️ Start     : POST /projects/<user_id>/<project_id>/start")
     print("🏆 Complete  : POST /projects/<user_id>/<project_id>/complete")
     print("🧠 Analysis  : GET  /skill-analysis/<user_id>")
     print("🤖 AI Chat   : POST /chat")
-    print("💚 Health    : GET  /health")
     print("=" * 60)
     print()
 
