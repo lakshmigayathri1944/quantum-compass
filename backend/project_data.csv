@@ -1,0 +1,8 @@
+level,goal,project,difficulty,technology
+Beginner,AI + Quantum Engineer,Quantum Random Number Generator,Easy,Qiskit
+Beginner,AI + Quantum Engineer,Quantum Gates Simulator,Easy,Qiskit
+Beginner,Quantum Developer,Quantum Circuit Simulator,Easy,Qiskit
+Intermediate,AI + Quantum Engineer,Quantum Machine Learning Classifier,Medium,PennyLane
+Intermediate,Quantum Developer,Quantum Teleportation Simulator,Medium,Qiskit
+Advanced,Quantum Research,VQE Molecular Simulation,Hard,Qiskit VQE
+Advanced,AI + Quantum Engineer,Quantum Neural Network,Hard,PennyLane

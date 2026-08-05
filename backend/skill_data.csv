@@ -1,0 +1,11 @@
+level,skill,status,score
+Beginner,Python Basics,Completed,100
+Beginner,Linear Algebra,Missing,0
+Beginner,Quantum Fundamentals,Missing,0
+Intermediate,Qubits,Missing,0
+Intermediate,Quantum Gates,Missing,0
+Intermediate,Qiskit,Missing,0
+Advanced,Grover Algorithm,Missing,0
+Advanced,QAOA,Missing,0
+Advanced,VQE,Missing,0
+Advanced,Quantum Machine Learning,Missing,0
