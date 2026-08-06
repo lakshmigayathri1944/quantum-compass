@@ -3,6 +3,25 @@
 ### AI-Powered Quantum Computing Learning Platform
 
 Quantum Compass is an AI-powered educational platform designed to help learners build practical skills in **quantum computing** through personalized learning roadmaps, skill analysis, project recommendations, progress tracking, analytics, and an AI-powered mentor.
+---
+
+## 🎥 Recorded Project Demo
+
+A complete 4-minute walkthrough of the Quantum Compass platform is available below.
+
+**🎬 [View Quantum Compass Demo Recording](./demo/quantum-compass-demo.mp4)**
+
+The demonstration covers:
+
+* User login and authentication
+* Personalized learning dashboard
+* Learning roadmap
+* Practical quantum projects
+* Progress analytics
+* AI Quantum Mentor
+* Technology architecture and project vision
+
+> The demo recording is stored in the repository using Git LFS.
 
 ---
 
@@ -119,7 +138,6 @@ The AI Mentor provides learning guidance around:
 
 ## 🏗️ System Architecture
 
-```text
                     ┌─────────────────────────┐
                     │     React Frontend      │
                     │       Vite + JS         │
@@ -145,7 +163,7 @@ The AI Mentor provides learning guidance around:
                     ┌─────────────────────────┐
                     │ Quantum Learning System │
                     └─────────────────────────┘
-```
+
 
 ---
 
@@ -192,7 +210,6 @@ The AI Mentor provides learning guidance around:
 
 ## 📁 Project Structure
 
-```text
 quantum-compass/
 │
 ├── backend/
@@ -236,7 +253,7 @@ quantum-compass/
 │
 ├── .gitignore
 └── README.md
-```
+
 
 > The local SQLite database and development-only files are excluded from version control through `.gitignore`.
 
@@ -246,36 +263,35 @@ quantum-compass/
 
 ### 1. Clone the Repository
 
-```bash
+
 git clone https://github.com/lakshmigayathri1944/quantum-compass.git
 cd quantum-compass
-```
+
 
 ### 2. Set Up the Backend
 
 Open a terminal:
 
-```powershell
+
 cd backend
 py -m pip install -r requirements.txt
 py app.py
-```
+
 
 The Flask backend should run at:
 
-```text
+
 http://127.0.0.1:5000
-```
+
 
 ### 3. Set Up the Frontend
 
 Open a **second terminal**:
 
-```powershell
 cd frontend
 npm install
 npm run dev
-```
+
 
 Open the local URL displayed by Vite in your browser.
 
@@ -305,19 +321,18 @@ The backend exposes API endpoints for authentication, dashboards, analytics, pro
 
 The backend provides a health-check endpoint:
 
-```text
 GET /health
-```
+
 
 Example:
 
-```json
+
 {
   "database": "Connected",
   "service": "Quantum Compass AI Backend",
   "status": "healthy"
 }
-```
+
 
 ---
 
@@ -325,7 +340,7 @@ Example:
 
 Quantum Compass follows a progressive learning model:
 
-```text
+
 Python
    ↓
 Linear Algebra
@@ -345,7 +360,7 @@ Quantum Optimization
 Quantum Machine Learning
    ↓
 Practical Quantum Projects
-```
+
 
 This progression helps learners move from fundamental concepts toward practical quantum computing applications.
 
@@ -355,10 +370,10 @@ This progression helps learners move from fundamental concepts toward practical 
 
 Backend testing files are included in the project:
 
-```text
+
 backend/test_api.py
 backend/test_ml.py
-```
+
 
 These can be used to validate API functionality and model-related functionality during development.
 
@@ -412,6 +427,16 @@ Computer Science Engineering
 * AI Mentor
 * Analytics dashboard
 * Practical quantum project learning
+---
+
+## 🎬 Demo & Presentation
+
+**Recorded Prototype Walkthrough:**
+[Quantum Compass — 4-Minute Demo](./demo/quantum-compass-demo.mp4)
+
+The recorded demonstration presents the working prototype, including the dashboard, learning roadmap, project system, analytics, and AI mentor.
+
+---
 
 ---
 
